@@ -31,10 +31,10 @@ def main() -> None:
         columns=['Construction']
     )
     text_df['Num of words'] = text_df['Construction'].apply(calculate_words)
-    print(text_df)
+    # print(text_df)
     text_df['Complexity'] = text_df['Num of words'].apply(check_complexity)
 
-    print(text_df)
+    # print(text_df)
     # print(text_df)
     text_df.to_excel(RESULT_PATH)
 
@@ -50,8 +50,12 @@ def get_text_construction(paragraphs: list) -> list:
             # print(sentense)
             if symbol == ' ' and sentense == '':
                 continue
+            # это границы слов
             elif symbol in (' ', ',', '-', '(', ')', '—', '+', ':'):
-                if word in ('и т.', 'д.', 'и'):
+                if word in (
+                    'и т.', 'д.', 'и', '(!', '(!!', '(!!!', '', 'млн.',
+                    'тыс.', 'т.', 'е.', 'т.е.', 'Т.', 'Т.е.', 'т. е.', 'Т. е.'
+                ):
                     word += symbol
                     sentense += symbol
                 elif sentense and sentense[-1] in ('.', '!', '?', ';'):
@@ -96,7 +100,7 @@ def calculate_words(sentence: str) -> Optional[int]:
     )
     sentence_list = sentence.split()
     sentence_list_cleaned = [word for word in sentence_list if word != '']
-    print(sentence_list_cleaned)
+    # print(sentence_list_cleaned)
     return len(sentence_list_cleaned)
 
 
